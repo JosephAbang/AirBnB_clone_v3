@@ -56,10 +56,36 @@ Classes inherited from Base Model:
 
 #### `/models/engine` directory contains File Storage class that handles JASON serialization and deserialization :
 [file_storage.py](/models/engine/file_storage.py) - serializes instances to a JSON file & deserializes back to instances
-* `def all(self)` - returns the dictionary __objects
-* `def new(self, obj)` - sets in __objects the obj with key <obj class name>.id
-* `def save(self)` - serializes __objects to the JSON file (path: __file_path)
-* ` def reload(self)` -  deserializes the JSON file to __objects
+
+	* `def all(self)` - returns the dictionary `__objects`
+
+	* `def new(self, obj)` - sets in `__objects` the obj with key <obj class name>.id
+
+	* `def save(self)` - serializes `__objects` to the JSON file (path: `__file_path`)
+
+	* ` def reload(self)` -  deserializes the JSON file to `__objects`
+
+	* `def get(self, cls, id)` This method retrieves a single object from the storage dictionary based on the provided class and ID.
+
+	* `def count(self, cls=None)` This method counts the number of objects in the storage dictionary.
+
+#### `/models/engine` directory contains DBStorage class that uses the SQLAlchemy with a mysql+mysqldb responsible for handling database storage:
+
+[db_storage.py](/models/engine/db_storage.py)
+
+	* `def all(self, cls=None)` This method queries the database session for objects of a given class (cls). If cls is None, it queries for all types of objects. It returns a dictionary where keys are strings representing the class name and object ID, and values are the objects themselves.
+
+	* `def new(self, obj)` This method adds a given object to the current database session (`self.__session`)
+
+	* `def save(self)` This method commits all changes made in the current database session to the database.
+
+	* `def delete(self, obj=None)` This method deletes the given object from the current database session if it's not None.
+
+	* `def reload(self)` This method creates all tables in the database (based on SQLAlchemy's Base class), and creates a new database session from the engine using a sessionmaker.
+
+	* `def get(self, cls, id)` This method retrieves a single object from the database based on the provided class and ID.
+
+	* `def count(self, cls=None)` This method counts the number of objects in the database storage.
 
 #### `/tests` directory contains all unit test cases for this project:
 [/test_models/test_base_model.py](/tests/test_models/test_base_model.py) - Contains the TestBaseModel and TestBaseModelDocs classes
