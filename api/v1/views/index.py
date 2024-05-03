@@ -3,7 +3,7 @@
     index.py to connect to API
 '''
 from api.v1.views import app_views
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Blueprint
 from models import storage
 
 hbnbText = {
@@ -26,7 +26,9 @@ def hbnbStatus():
 
 @app_views.route('/stats', strict_slashes=False)
 def hbnbStats():
-    """hbnbStats"""
+    '''
+        hbnbStats
+    '''
     return_dict = {}
     for key, value in hbnbText.items():
         return_dict[key] = storage.count(value)
